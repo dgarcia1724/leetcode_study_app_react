@@ -1,13 +1,17 @@
+import { useNavigate } from "react-router-dom";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "./firebase";
 
 function GoogleAuth() {
+  const navigate = useNavigate();
+
   const handleGoogleSignIn = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
         const user = result.user;
         console.log("Google user signed in:", user);
+        navigate("/"); // Navigate to the home page after successful sign-in
       })
       .catch((error) => console.error("Error signing in with Google:", error));
   };
