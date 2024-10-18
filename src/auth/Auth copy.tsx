@@ -29,21 +29,33 @@ function Auth() {
   };
 
   return (
-    <div>
+    <div className="space-y-4">
       <input
         type="email"
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
+        className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1877f2]"
       />
       <input
         type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1877f2]"
       />
-      <button onClick={handleSignUp}>Sign Up</button>
-      <button onClick={handleLogin}>Login</button>
+      <button
+        onClick={handleLogin}
+        className="w-full bg-[#1877f2] text-white py-3 rounded-md font-bold hover:bg-[#166fe5]"
+      >
+        Log In
+      </button>
+      <button
+        onClick={handleSignUp}
+        className="w-full bg-[#42b72a] text-white py-3 rounded-md font-bold hover:bg-[#36a420]"
+      >
+        Create New Account
+      </button>
     </div>
   );
 }
