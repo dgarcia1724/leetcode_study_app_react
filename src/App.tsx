@@ -1,6 +1,11 @@
 // src/App.tsx
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  getSavedTheme,
+  applyTheme,
+  setThemeBasedOnDevice,
+} from "./utils/themeUtils";
 
 // components
 import TopNav from "./components/TopNav"; // Import your TopNav component
@@ -13,6 +18,15 @@ import Settings from "./pages/Settings";
 import AuthPage from "./auth/AuthPage";
 
 function App() {
+  useEffect(() => {
+    const savedTheme = getSavedTheme();
+    if (savedTheme) {
+      applyTheme(savedTheme);
+    } else {
+      setThemeBasedOnDevice(); // Apply device theme if no preference is set
+    }
+  }, []);
+
   return (
     <>
       <Router>
