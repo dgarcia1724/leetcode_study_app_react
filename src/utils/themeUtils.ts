@@ -2,14 +2,12 @@
 export const applyTheme = (theme: string) => {
   const root = window.document.documentElement;
 
-  // Remove all theme classes
-  root.classList.remove("light", "dark");
-
-  // Apply the selected theme
   if (theme === "light") {
     root.classList.add("light");
+    root.classList.remove("dark");
   } else if (theme === "dark") {
     root.classList.add("dark");
+    root.classList.remove("light");
   }
 };
 
@@ -27,10 +25,12 @@ export const setThemeBasedOnDevice = () => {
     "(prefers-color-scheme: dark)"
   ).matches;
 
-  // Apply system preference
+  // Apply the appropriate theme
   if (prefersDarkMode) {
     root.classList.add("dark");
+    root.classList.remove("light");
   } else {
     root.classList.add("light");
+    root.classList.remove("dark");
   }
 };
