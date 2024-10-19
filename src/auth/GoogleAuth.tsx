@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "./firebase";
+import { useToast } from "../components/Toast/ToastProvider";
 
 function GoogleAuth() {
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const handleGoogleSignIn = () => {
     const provider = new GoogleAuthProvider();
@@ -11,9 +13,13 @@ function GoogleAuth() {
       .then((result) => {
         const user = result.user;
         console.log("Google user signed in:", user);
+        showToast("Login successful!", "success");
         navigate("/folders"); // Navigate to the folders page after successful sign-in
       })
-      .catch((error) => console.error("Error signing in with Google:", error));
+      .catch((error) => {
+        console.error("Error signing in with Google:", error);
+        showToast("Login failed. Please try again.", "error");
+      });
   };
 
   return (

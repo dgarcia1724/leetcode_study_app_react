@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
+import { useToast } from "../components/Toast/ToastProvider";
 import {
   applyTheme,
   saveThemePreference,
@@ -11,6 +12,7 @@ import {
 const Settings: React.FC = () => {
   const [theme, setTheme] = useState<string>("");
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   useEffect(() => {
     const savedTheme = getSavedTheme();
@@ -38,9 +40,11 @@ const Settings: React.FC = () => {
     const auth = getAuth();
     try {
       await signOut(auth);
+      showToast("Logout successful!", "success");
       navigate("/auth"); // Redirect to login page after successful logout
     } catch (error) {
       console.error("Error signing out:", error);
+      showToast("Logout failed. Please try again.", "error");
     }
   };
 
