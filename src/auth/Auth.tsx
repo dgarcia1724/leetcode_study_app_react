@@ -19,7 +19,7 @@ function Auth() {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log("User signed up:", user);
-        navigate("/"); // Navigate to home page after successful sign up
+        navigate("/folders"); // Navigate to folders page after successful sign up
       })
       .catch((error) => {
         // Handle error messages based on Firebase error codes
@@ -45,7 +45,7 @@ function Auth() {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log("User logged in:", user);
-        navigate("/"); // Navigate to home page after successful login
+        navigate("/folders"); // Navigate to folders page after successful login
       })
       .catch((error) => {
         // Handle error messages based on Firebase error codes

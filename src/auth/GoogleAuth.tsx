@@ -11,7 +11,7 @@ function GoogleAuth() {
       .then((result) => {
         const user = result.user;
         console.log("Google user signed in:", user);
-        navigate("/"); // Navigate to the home page after successful sign-in
+        navigate("/folders"); // Navigate to the folders page after successful sign-in
       })
       .catch((error) => console.error("Error signing in with Google:", error));
   };

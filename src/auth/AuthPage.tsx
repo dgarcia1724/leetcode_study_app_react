@@ -11,22 +11,18 @@ function AuthPage() {
             Sign in to your account
           </h2>
         </div>
-        <Auth />
-        <div className="mt-6">
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
-                Or continue with
-              </span>
-            </div>
+        <GoogleAuth />
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
           </div>
-          <div className="mt-6">
-            <GoogleAuth />
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+              Or sign in with email
+            </span>
           </div>
         </div>
+        <Auth />
       </div>
     </div>
   );
