@@ -6,12 +6,14 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "./firebase";
+import { useToast } from "../components/Toast/ToastProvider";
 
 function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(""); // New state for error messages
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const handleSignUp = () => {
     setErrorMessage(""); // Clear previous error message
@@ -19,6 +21,7 @@ function Auth() {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log("User signed up:", user);
+        showToast("Account created successfully!", "success"); // Add this line
         navigate("/folders"); // Navigate to folders page after successful sign up
       })
       .catch((error) => {
@@ -35,6 +38,7 @@ function Auth() {
             break;
           default:
             setErrorMessage("Failed to create account. Please try again.");
+            showToast("Failed to create account. Please try again.", "error"); // Add this line
         }
       });
   };
@@ -45,6 +49,7 @@ function Auth() {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log("User logged in:", user);
+        showToast("Login successful!", "success");
         navigate("/folders"); // Navigate to folders page after successful login
       })
       .catch((error) => {
@@ -61,6 +66,7 @@ function Auth() {
             break;
           default:
             setErrorMessage("Failed to log in. Please try again.");
+            showToast("Login failed. Please try again.", "error");
         }
       });
   };

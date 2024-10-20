@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "./firebase";
 import { useToast } from "../components/Toast/ToastProvider";
@@ -71,6 +72,31 @@ function Auth() {
       });
   };
 
+  const handleForgotPassword = () => {
+    setErrorMessage(""); // Clear previous error message
+    if (!email) {
+      setErrorMessage("Please enter your email address.");
+      return;
+    }
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        showToast("Password reset email sent. Check your inbox.", "success");
+      })
+      .catch((error) => {
+        switch (error.code) {
+          case "auth/user-not-found":
+            setErrorMessage("No user found with this email.");
+            break;
+          case "auth/invalid-email":
+            setErrorMessage("Invalid email format.");
+            break;
+          default:
+            setErrorMessage("Failed to send reset email. Please try again.");
+            showToast("Failed to send reset email. Please try again.", "error");
+        }
+      });
+  };
+
   return (
     <div className="space-y-4">
       <input
@@ -98,6 +124,12 @@ function Auth() {
         className="w-full bg-[#42b72a] dark:bg-[#22c55e] text-white py-3 rounded-md font-bold hover:bg-[#36a420] dark:hover:bg-[#16a34a]"
       >
         Create New Account
+      </button>
+      <button
+        onClick={handleForgotPassword}
+        className="w-full bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 py-2 rounded-md font-medium hover:bg-gray-300 dark:hover:bg-gray-500"
+      >
+        Forgot Password?
       </button>
       {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
     </div>
