@@ -61,7 +61,15 @@ export default function TopNav() {
               className="flex items-center justify-between space-x-2 bg-[#1877F2] text-white font-semibold py-2 px-4 rounded-md hover:bg-[#166FE5] w-64"
             >
               <div className="flex items-center space-x-2">
-                <FaUserCircle className="h-6 w-6" />
+                {currentUser.photoURL ? (
+                  <img
+                    src={currentUser.photoURL}
+                    alt="User profile"
+                    className="h-6 w-6 rounded-full"
+                  />
+                ) : (
+                  <FaUserCircle className="h-6 w-6" />
+                )}
                 <span className="max-w-[150px] truncate">
                   {currentUser.email}
                 </span>
