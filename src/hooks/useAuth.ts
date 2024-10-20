@@ -1,19 +1,9 @@
-import { useState, useEffect } from "react";
-import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import { useContext } from "react";
+import { AuthContext } from "../auth/AuthProvider"; // Use the context for global state
 
+// Custom hook to retrieve auth context and handle Firebase auth state
 export function useAuth() {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { user, uid, loading } = useContext(AuthContext); // Get user, uid, and loading from the AuthProvider context
 
-  useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  return { user, loading };
+  return { user, uid, loading };
 }
