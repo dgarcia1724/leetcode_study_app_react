@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { FaUserCircle } from "react-icons/fa";
+import { FaUserCircle, FaHome, FaFolder, FaCog } from "react-icons/fa";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { useAuth } from "../hooks/useAuth"; // Assuming you have an AuthContext
 
@@ -31,25 +31,27 @@ export default function TopNav() {
         <NavLink
           to="/"
           className={({ isActive }) =>
-            `hover:text-blue-600 dark:hover:text-blue-400 font-semibold text-lg ${
+            `hover:text-blue-600 dark:hover:text-blue-400 font-semibold text-lg flex items-center ${
               isActive
                 ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400"
                 : ""
             }`
           }
         >
+          <FaHome className="mr-2" />
           Home
         </NavLink>
         <NavLink
           to="/folders"
           className={({ isActive }) =>
-            `hover:text-blue-600 dark:hover:text-blue-400 font-semibold text-lg ${
+            `hover:text-blue-600 dark:hover:text-blue-400 font-semibold text-lg flex items-center ${
               isActive
                 ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400"
                 : ""
             }`
           }
         >
+          <FaFolder className="mr-2" />
           Folders
         </NavLink>
       </div>
@@ -84,9 +86,10 @@ export default function TopNav() {
               <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-700 rounded-md shadow-lg py-1">
                 <NavLink
                   to="/settings"
-                  className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
+                  className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 flex items-center"
                   onClick={() => setIsDropdownOpen(false)}
                 >
+                  <FaCog className="mr-2" />
                   Settings
                 </NavLink>
                 {/* Add more dropdown options here */}
