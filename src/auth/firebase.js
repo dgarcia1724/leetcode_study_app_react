@@ -4,7 +4,7 @@ import { getAuth } from "firebase/auth";
 
 // Firebase configuration (from your project settings)
 const firebaseConfig = {
-  apiKey: "AIzaSyD1_4-k6rH1l-01oH8X-tDKGvhob0mpOY8",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY, // Use import.meta.env
   authDomain: "leetcode-study-app.firebaseapp.com",
   projectId: "leetcode-study-app",
   storageBucket: "leetcode-study-app.appspot.com",
