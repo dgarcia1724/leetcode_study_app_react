@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import NewFolderModal from "../components/NewFolderModal";
+import { useFolders } from "../hooks/useFolders";
+import FolderList from "../components/folders/FolderList";
+import NewFolderModal from "../components/folders/NewFolderModal";
 
 const Folders: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { data: folders, isLoading, isError } = useFolders();
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -44,7 +47,7 @@ const Folders: React.FC = () => {
               </svg>
             </button>
           </div>
-          <div className="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
+          <div className="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4 mb-4">
             <button
               onClick={openModal}
               className="w-full sm:w-auto bg-[#1877f2] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#166fe5] transition duration-200"
@@ -55,6 +58,11 @@ const Folders: React.FC = () => {
               Filter
             </button>
           </div>
+
+          {/* Display folders */}
+          {isLoading && <p>Loading folders...</p>}
+          {isError && <p>Error loading folders</p>}
+          {folders && <FolderList folders={folders} />}
         </div>
       </div>
       <NewFolderModal
