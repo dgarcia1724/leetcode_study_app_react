@@ -26,7 +26,12 @@ const FolderList: React.FC<FolderListProps> = ({
             onClick={() => onFolderClick(folder.id, folder.name)}
             className="text-left flex-grow"
           >
-            {folder.name}
+            <div className="font-medium text-gray-900 dark:text-gray-100">
+              {folder.name}
+            </div>
+            <div className="text-sm text-gray-500 dark:text-gray-400">
+              {new Date(folder.editDate).toLocaleString()}
+            </div>
           </button>
           <div className="flex space-x-2">
             <button
