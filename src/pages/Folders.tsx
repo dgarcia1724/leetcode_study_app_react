@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import FolderList from "../components/folders/FolderList";
 import NewFolderModal from "../components/folders/NewFolderModal";
 import { FiChevronDown } from "react-icons/fi";
+import { debounce } from "lodash"; // Make sure to install lodash: npm install lodash @types/lodash
 
 interface Folder {
   id: number;
@@ -13,10 +14,17 @@ interface Folder {
   lists: any[];
 }
 
-const fetchFolders = async (sortBy: "editDate" | "name"): Promise<Folder[]> => {
-  const response = await fetch(
-    `http://localhost:8080/api/users/user1/folders/sort/${sortBy}`
-  );
+const fetchFolders = async (
+  sortBy: "editDate" | "name",
+  searchPrefix: string = ""
+): Promise<Folder[]> => {
+  let url = `http://localhost:8080/api/users/user1/folders/sort/${sortBy}`;
+  if (searchPrefix) {
+    url = `http://localhost:8080/api/users/user1/folders/search?prefix=${encodeURIComponent(
+      searchPrefix
+    )}`;
+  }
+  const response = await fetch(url);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -27,6 +35,7 @@ const Folders: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterOption, setFilterOption] = useState<"a-z" | "recent">("recent");
+  const [searchTerm, setSearchTerm] = useState("");
   const filterRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -34,8 +43,9 @@ const Folders: React.FC = () => {
     isLoading,
     isError,
   } = useQuery<Folder[], Error>({
-    queryKey: ["folders", filterOption],
-    queryFn: () => fetchFolders(filterOption === "a-z" ? "name" : "editDate"),
+    queryKey: ["folders", filterOption, searchTerm],
+    queryFn: () =>
+      fetchFolders(filterOption === "a-z" ? "name" : "editDate", searchTerm),
   });
 
   const openModal = () => setIsModalOpen(true);
@@ -62,6 +72,14 @@ const Folders: React.FC = () => {
   const handleFilterChange = (option: "a-z" | "recent") => {
     setFilterOption(option);
     setIsFilterOpen(false);
+  };
+
+  const debouncedSearch = debounce((value: string) => {
+    setSearchTerm(value);
+  }, 300);
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    debouncedSearch(event.target.value);
   };
 
   useEffect(() => {
@@ -100,6 +118,7 @@ const Folders: React.FC = () => {
               <input
                 type="text"
                 placeholder="Search folders"
+                onChange={handleSearchChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               />
             </div>
