@@ -7,6 +7,7 @@ import { debounce } from "lodash";
 import { useAuth } from "../hooks/useAuth";
 import { useFolders } from "../hooks/useFolders";
 import { Folder } from "../types/folder";
+import { useToast } from "../components/Toast/ToastProvider";
 
 const Folders: React.FC = () => {
   const { user } = useAuth();
@@ -19,6 +20,7 @@ const Folders: React.FC = () => {
   const [filterOption, setFilterOption] = useState<"a-z" | "recent">("recent");
   const [searchTerm, setSearchTerm] = useState("");
   const filterRef = useRef<HTMLDivElement>(null);
+  const { showToast } = useToast();
 
   const {
     foldersQuery,
@@ -45,8 +47,10 @@ const Folders: React.FC = () => {
     try {
       await createFolderMutation.mutateAsync(folderName);
       closeModal();
+      showToast("Folder created successfully!", "success");
     } catch (error) {
       console.error("Error creating folder:", error);
+      showToast("Failed to create folder. Please try again.", "error");
       throw error;
     }
   };
