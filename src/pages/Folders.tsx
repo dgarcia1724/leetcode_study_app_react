@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import FolderList from "../components/folders/FolderList";
 import NewFolderModal from "../components/folders/NewFolderModal";
 import { FiChevronDown } from "react-icons/fi";
@@ -31,12 +31,33 @@ const fetchFolders = async (
   return response.json();
 };
 
+const createFolder = async (folderName: string): Promise<Folder> => {
+  const response = await fetch(
+    "http://localhost:8080/api/users/user1/folders",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name: folderName }),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to create folder");
+  }
+
+  return response.json();
+};
+
 const Folders: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterOption, setFilterOption] = useState<"a-z" | "recent">("recent");
   const [searchTerm, setSearchTerm] = useState("");
   const filterRef = useRef<HTMLDivElement>(null);
+
+  const queryClient = useQueryClient();
 
   const {
     data: folders,
@@ -48,15 +69,26 @@ const Folders: React.FC = () => {
       fetchFolders(filterOption === "a-z" ? "name" : "editDate", searchTerm),
   });
 
+  const createFolderMutation = useMutation({
+    mutationFn: createFolder,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["folders"]);
+    },
+  });
+
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
   const toggleFilter = () => setIsFilterOpen(!isFilterOpen);
 
-  const handleCreateFolder = (folderName: string) => {
-    // Implement folder creation logic here
-    console.log(`Creating folder: ${folderName}`);
-    closeModal();
+  const handleCreateFolder = async (folderName: string) => {
+    try {
+      await createFolderMutation.mutateAsync(folderName);
+      closeModal();
+    } catch (error) {
+      console.error("Error creating folder:", error);
+      throw error;
+    }
   };
 
   const handleEditFolder = (folderId: number) => {
