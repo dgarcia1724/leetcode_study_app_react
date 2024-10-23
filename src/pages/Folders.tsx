@@ -1,80 +1,24 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import FolderList from "../components/folders/FolderList";
 import NewFolderModal from "../components/folders/NewFolderModal";
 import { FiChevronDown } from "react-icons/fi";
-import { debounce } from "lodash"; // Make sure to install lodash: npm install lodash @types/lodash
-
-interface Folder {
-  id: number;
-  name: string;
-  userId: string;
-  editDate: string;
-  confidencePercentage: number;
-  lists: any[];
-}
-
-const fetchFolders = async (
-  sortBy: "editDate" | "name",
-  searchPrefix: string = ""
-): Promise<Folder[]> => {
-  let url = `http://localhost:8080/api/users/user1/folders/sort/${sortBy}`;
-  if (searchPrefix) {
-    url = `http://localhost:8080/api/users/user1/folders/search?prefix=${encodeURIComponent(
-      searchPrefix
-    )}`;
-  }
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
-  return response.json();
-};
-
-const createFolder = async (folderName: string): Promise<Folder> => {
-  const response = await fetch(
-    "http://localhost:8080/api/users/user1/folders",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name: folderName }),
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error("Failed to create folder");
-  }
-
-  return response.json();
-};
+import { debounce } from "lodash";
+import { useAuth } from "../hooks/useAuth";
+import { useFolders } from "../hooks/useFolders";
 
 const Folders: React.FC = () => {
+  const { user } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterOption, setFilterOption] = useState<"a-z" | "recent">("recent");
   const [searchTerm, setSearchTerm] = useState("");
   const filterRef = useRef<HTMLDivElement>(null);
 
-  const queryClient = useQueryClient();
-
-  const {
-    data: folders,
-    isLoading,
-    isError,
-  } = useQuery<Folder[], Error>({
-    queryKey: ["folders", filterOption, searchTerm],
-    queryFn: () =>
-      fetchFolders(filterOption === "a-z" ? "name" : "editDate", searchTerm),
-  });
-
-  const createFolderMutation = useMutation({
-    mutationFn: createFolder,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["folders"]);
-    },
-  });
+  const { foldersQuery, createFolderMutation } = useFolders(
+    user?.uid || "",
+    filterOption,
+    searchTerm
+  );
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -200,19 +144,19 @@ const Folders: React.FC = () => {
             </div>
 
             {/* Folder list */}
-            {isLoading && (
+            {foldersQuery.isLoading && (
               <p className="text-gray-700 dark:text-gray-300">
                 Loading folders...
               </p>
             )}
-            {isError && (
+            {foldersQuery.isError && (
               <p className="text-red-600 dark:text-red-400">
                 Error loading folders
               </p>
             )}
-            {folders && (
+            {foldersQuery.data && (
               <FolderList
-                folders={folders}
+                folders={foldersQuery.data}
                 onEditFolder={handleEditFolder}
                 onDeleteFolder={handleDeleteFolder}
               />

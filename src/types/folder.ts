@@ -1,6 +1,8 @@
 export interface Folder {
-  id: string;
+  id: number;
   name: string;
+  userId: string;
   editDate: string;
-  // Add other properties as needed
+  confidencePercentage: number;
+  lists: any[];
 }
