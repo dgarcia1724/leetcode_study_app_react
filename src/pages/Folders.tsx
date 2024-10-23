@@ -60,8 +60,10 @@ const Folders: React.FC = () => {
       await editFolderMutation.mutateAsync({ folderId, folderName });
       console.log(`Folder with id ${folderId} updated successfully`);
       closeEditModal();
+      showToast("Folder updated successfully!", "success");
     } catch (error) {
       console.error("Error editing folder:", error);
+      showToast("Failed to update folder. Please try again.", "error");
       throw error;
     }
   };
