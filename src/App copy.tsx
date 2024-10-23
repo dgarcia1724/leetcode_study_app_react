@@ -21,7 +21,6 @@ import HomePage from "./pages/HomePage";
 import Folders from "./pages/Folders"; // Import your Folders page
 import Settings from "./pages/Settings";
 import AuthPage from "./auth/AuthPage";
-import Lists from "./pages/Lists"; // Add this import
 
 function App() {
   useEffect(() => {
@@ -46,14 +45,6 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Folders />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/folders/:folderId/lists"
-              element={
-                <ProtectedRoute>
-                  <Lists />
                 </ProtectedRoute>
               }
             />

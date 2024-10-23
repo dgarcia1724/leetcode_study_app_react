@@ -8,7 +8,6 @@ import { useAuth } from "../hooks/useAuth";
 import { useFolders } from "../hooks/useFolders";
 import { Folder } from "../types/folder";
 import { useToast } from "../components/Toast/ToastProvider";
-import { useNavigate } from "react-router-dom";
 
 const Folders: React.FC = () => {
   const { user } = useAuth();
@@ -22,7 +21,6 @@ const Folders: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const filterRef = useRef<HTMLDivElement>(null);
   const { showToast } = useToast();
-  const navigate = useNavigate();
 
   const {
     foldersQuery,
@@ -113,10 +111,6 @@ const Folders: React.FC = () => {
     };
   }, []);
 
-  const handleFolderClick = (folderId: number, folderName: string) => {
-    navigate(`/folders/${folderId}/lists`, { state: { folderName } });
-  };
-
   return (
     <div className="bg-gray-100 dark:bg-gray-900 min-h-screen pt-16">
       {/* Header */}
@@ -202,7 +196,6 @@ const Folders: React.FC = () => {
                 folders={foldersQuery.data}
                 onEditFolder={openEditModal}
                 onDeleteFolder={handleDeleteFolder}
-                onFolderClick={handleFolderClick}
               />
             )}
           </div>
