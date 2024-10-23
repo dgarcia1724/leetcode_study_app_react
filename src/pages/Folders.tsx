@@ -73,8 +73,10 @@ const Folders: React.FC = () => {
       try {
         await deleteFolderMutation.mutateAsync(folderId);
         console.log(`Folder with id ${folderId} deleted successfully`);
+        showToast("Folder deleted successfully!", "success");
       } catch (error) {
         console.error("Error deleting folder:", error);
+        showToast("Failed to delete folder. Please try again.", "error");
         throw error;
       }
     }
