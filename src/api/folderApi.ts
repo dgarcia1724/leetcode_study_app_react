@@ -59,4 +59,20 @@ export const editFolder = async (
   return response.json();
 };
 
+export const deleteFolder = async (
+  userId: string,
+  folderId: number
+): Promise<void> => {
+  const response = await fetch(
+    `${BASE_URL}/users/${userId}/folders/${folderId}`,
+    {
+      method: "DELETE",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to delete folder");
+  }
+};
+
 // Add other folder-related API calls here (e.g., deleteFolder)

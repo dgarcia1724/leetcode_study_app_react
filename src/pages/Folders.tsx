@@ -20,11 +20,12 @@ const Folders: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const filterRef = useRef<HTMLDivElement>(null);
 
-  const { foldersQuery, createFolderMutation, editFolderMutation } = useFolders(
-    user?.uid || "",
-    filterOption,
-    searchTerm
-  );
+  const {
+    foldersQuery,
+    createFolderMutation,
+    editFolderMutation,
+    deleteFolderMutation,
+  } = useFolders(user?.uid || "", filterOption, searchTerm);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -62,8 +63,15 @@ const Folders: React.FC = () => {
   };
 
   const handleDeleteFolder = async (folderId: number) => {
-    // Implement delete logic here
-    console.log(`Deleting folder with id: ${folderId}`);
+    if (window.confirm("Are you sure you want to delete this folder?")) {
+      try {
+        await deleteFolderMutation.mutateAsync(folderId);
+        console.log(`Folder with id ${folderId} deleted successfully`);
+      } catch (error) {
+        console.error("Error deleting folder:", error);
+        throw error;
+      }
+    }
   };
 
   const handleFilterChange = (option: "a-z" | "recent") => {
