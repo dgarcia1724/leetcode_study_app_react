@@ -8,7 +8,7 @@ interface FolderListProps {
 
 const FolderList: React.FC<FolderListProps> = ({ folders }) => {
   return (
-    <ul className="space-y-2">
+    <ul className="divide-y divide-gray-200 dark:divide-gray-700">
       {folders.map((folder) => (
         <FolderItem key={folder.id} folder={folder} />
       ))}
