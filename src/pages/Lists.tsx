@@ -111,7 +111,9 @@ const Lists: React.FC = () => {
   }, []);
 
   const handleListClick = (listId: number, listName: string) => {
-    navigate(`/folders/${folderId}/lists/${listId}`, { state: { listName } });
+    navigate(`/folders/${folderId}/lists/${listId}/problems`, {
+      state: { listName },
+    });
   };
 
   return (

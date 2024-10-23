@@ -22,6 +22,7 @@ import Folders from "./pages/Folders"; // Import your Folders page
 import Settings from "./pages/Settings";
 import AuthPage from "./auth/AuthPage";
 import Lists from "./pages/Lists"; // Add this import
+import Problems from "./pages/Problems"; // Add this import
 
 function App() {
   useEffect(() => {
@@ -54,6 +55,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Lists />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/folders/:folderId/lists/:listId/problems"
+              element={
+                <ProtectedRoute>
+                  <Problems />
                 </ProtectedRoute>
               }
             />
