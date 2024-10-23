@@ -1,20 +1,26 @@
 import React, { useState, useRef, useEffect } from "react";
 import FolderList from "../components/folders/FolderList";
 import NewFolderModal from "../components/folders/NewFolderModal";
+import EditFolderModal from "../components/folders/EditFolderModal";
 import { FiChevronDown } from "react-icons/fi";
 import { debounce } from "lodash";
 import { useAuth } from "../hooks/useAuth";
 import { useFolders } from "../hooks/useFolders";
+import { Folder } from "../types/folder";
 
 const Folders: React.FC = () => {
   const { user } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [currentEditFolder, setCurrentEditFolder] = useState<Folder | null>(
+    null
+  );
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterOption, setFilterOption] = useState<"a-z" | "recent">("recent");
   const [searchTerm, setSearchTerm] = useState("");
   const filterRef = useRef<HTMLDivElement>(null);
 
-  const { foldersQuery, createFolderMutation } = useFolders(
+  const { foldersQuery, createFolderMutation, editFolderMutation } = useFolders(
     user?.uid || "",
     filterOption,
     searchTerm
@@ -22,6 +28,15 @@ const Folders: React.FC = () => {
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  const openEditModal = (folder: Folder) => {
+    setCurrentEditFolder(folder);
+    setIsEditModalOpen(true);
+  };
+  const closeEditModal = () => {
+    setCurrentEditFolder(null);
+    setIsEditModalOpen(false);
+  };
 
   const toggleFilter = () => setIsFilterOpen(!isFilterOpen);
 
@@ -35,13 +50,19 @@ const Folders: React.FC = () => {
     }
   };
 
-  const handleEditFolder = (folderId: number) => {
-    // Implement folder editing logic here
-    console.log(`Editing folder with id: ${folderId}`);
+  const handleEditFolder = async (folderId: number, folderName: string) => {
+    try {
+      await editFolderMutation.mutateAsync({ folderId, folderName });
+      console.log(`Folder with id ${folderId} updated successfully`);
+      closeEditModal();
+    } catch (error) {
+      console.error("Error editing folder:", error);
+      throw error;
+    }
   };
 
-  const handleDeleteFolder = (folderId: number) => {
-    // Implement folder deletion logic here
+  const handleDeleteFolder = async (folderId: number) => {
+    // Implement delete logic here
     console.log(`Deleting folder with id: ${folderId}`);
   };
 
@@ -157,7 +178,7 @@ const Folders: React.FC = () => {
             {foldersQuery.data && (
               <FolderList
                 folders={foldersQuery.data}
-                onEditFolder={handleEditFolder}
+                onEditFolder={openEditModal}
                 onDeleteFolder={handleDeleteFolder}
               />
             )}
@@ -169,6 +190,13 @@ const Folders: React.FC = () => {
         isOpen={isModalOpen}
         onClose={closeModal}
         onCreateFolder={handleCreateFolder}
+      />
+
+      <EditFolderModal
+        isOpen={isEditModalOpen}
+        onClose={closeEditModal}
+        onEditFolder={handleEditFolder}
+        currentFolder={currentEditFolder}
       />
     </div>
   );

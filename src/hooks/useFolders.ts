@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchFolders, createFolder } from "../api/folderApi";
+import { fetchFolders, createFolder, editFolder } from "../api/folderApi";
 import { Folder } from "../types/folder";
 
 export const useFolders = (
@@ -27,8 +27,22 @@ export const useFolders = (
     },
   });
 
+  const editFolderMutation = useMutation({
+    mutationFn: ({
+      folderId,
+      folderName,
+    }: {
+      folderId: number;
+      folderName: string;
+    }) => editFolder(userId, folderId, folderName),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["folders", userId]);
+    },
+  });
+
   return {
     foldersQuery,
     createFolderMutation,
+    editFolderMutation,
   };
 };

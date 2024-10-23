@@ -39,4 +39,24 @@ export const createFolder = async (
   return response.json();
 };
 
-// Add other folder-related API calls here (e.g., editFolder, deleteFolder)
+export const editFolder = async (
+  userId: string,
+  folderId: number,
+  folderName: string
+): Promise<Folder> => {
+  const response = await fetch(`${BASE_URL}/users/${userId}/folders`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id: folderId, name: folderName }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to edit folder");
+  }
+
+  return response.json();
+};
+
+// Add other folder-related API calls here (e.g., deleteFolder)
