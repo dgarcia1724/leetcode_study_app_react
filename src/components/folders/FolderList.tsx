@@ -32,21 +32,19 @@ const FolderList: React.FC<FolderListProps> = ({
             <div className="text-sm text-gray-500 dark:text-gray-400">
               {new Date(folder.editDate).toLocaleString()}
             </div>
-            {folder.confidencePercentage > 0 && (
-              <div className="mt-1">
-                <div className="flex items-center">
-                  <div className="flex-1 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                    <div
-                      className="bg-green-600 h-2.5 rounded-full"
-                      style={{ width: `${folder.confidencePercentage}%` }}
-                    ></div>
-                  </div>
-                  <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
-                    {folder.confidencePercentage.toFixed(1)}%
-                  </span>
+            <div className="mt-1">
+              <div className="flex items-center">
+                <div className="flex-1 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                  <div
+                    className="bg-green-600 h-2.5 rounded-full"
+                    style={{ width: `${folder.confidencePercentage}%` }}
+                  ></div>
                 </div>
+                <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
+                  {folder.confidencePercentage.toFixed(1)}%
+                </span>
               </div>
-            )}
+            </div>
           </button>
           <div className="flex space-x-2">
             <button
