@@ -3,4 +3,5 @@ export interface Problem {
   name: string;
   url: string;
   confidencePercentage: number;
+  editDate: string;
 }
