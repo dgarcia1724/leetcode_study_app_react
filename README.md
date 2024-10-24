@@ -1,4 +1,4 @@
-
+![Project Picture](images/ProjectPicture.png)
 
 # Project Overview
 
