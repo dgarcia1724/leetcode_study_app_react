@@ -17,22 +17,28 @@ const EditProblemModal: React.FC<EditProblemModalProps> = ({
   onEditProblem,
   currentProblem,
 }) => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [name, setName] = useState("");
+  const [url, setUrl] = useState("");
+  const [confidencePercentage, setConfidencePercentage] = useState(50);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (currentProblem) {
-      setTitle(currentProblem.title);
-      setDescription(currentProblem.description || "");
+      setName(currentProblem.name);
+      setUrl(currentProblem.url);
+      setConfidencePercentage(currentProblem.confidencePercentage);
     }
   }, [currentProblem]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim()) {
-      setError("Problem title cannot be empty");
+    if (!name.trim()) {
+      setError("Problem name cannot be empty");
+      return;
+    }
+    if (!url.trim()) {
+      setError("URL cannot be empty");
       return;
     }
     setIsLoading(true);
@@ -40,8 +46,9 @@ const EditProblemModal: React.FC<EditProblemModalProps> = ({
     try {
       if (currentProblem) {
         await onEditProblem(currentProblem.id, {
-          title: title.trim(),
-          description: description.trim(),
+          name: name.trim(),
+          url: url.trim(),
+          confidencePercentage,
         });
         onClose();
       }
@@ -63,18 +70,35 @@ const EditProblemModal: React.FC<EditProblemModalProps> = ({
         <form onSubmit={handleSubmit}>
           <input
             type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter problem title"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Enter problem name"
             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white mb-4"
           />
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter problem description (optional)"
+          <input
+            type="url"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            placeholder="Enter problem URL"
             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white mb-4"
-            rows={3}
           />
+          <div className="mb-4">
+            <label
+              htmlFor="confidencePercentage"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            >
+              Confidence Percentage: {confidencePercentage}%
+            </label>
+            <input
+              type="range"
+              id="confidencePercentage"
+              min="0"
+              max="100"
+              value={confidencePercentage}
+              onChange={(e) => setConfidencePercentage(Number(e.target.value))}
+              className="w-full"
+            />
+          </div>
           {error && <p className="text-red-500 mb-4">{error}</p>}
           <div className="flex justify-end space-x-2">
             <button
