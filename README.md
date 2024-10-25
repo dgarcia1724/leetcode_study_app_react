@@ -1,6 +1,6 @@
 ![Project Picture](images/ProjectPicture.png)
 ### Live Site
-<a href="https://leetcode-spaced-repetition-study-app.netlify.app/" target="_blank">https://leetcode-spaced-repetition-study-app.netlify.app/</a>
+[https://leetcode-spaced-repetition-study-app.netlify.app/](https://leetcode-spaced-repetition-study-app.netlify.app/)
 
 
 # Project Overview
