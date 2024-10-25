@@ -28,7 +28,7 @@ export const useFolders = (
   const createFolderMutation = useMutation({
     mutationFn: (folderName: string) => createFolder(userId, folderName),
     onSuccess: () => {
-      queryClient.invalidateQueries(["folders", userId]);
+      queryClient.invalidateQueries({ queryKey: ["folders", userId] });
     },
   });
 
@@ -41,14 +41,14 @@ export const useFolders = (
       folderName: string;
     }) => editFolder(userId, folderId, folderName),
     onSuccess: () => {
-      queryClient.invalidateQueries(["folders", userId]);
+      queryClient.invalidateQueries({ queryKey: ["folders", userId] });
     },
   });
 
   const deleteFolderMutation = useMutation({
     mutationFn: (folderId: number) => deleteFolder(userId, folderId),
     onSuccess: () => {
-      queryClient.invalidateQueries(["folders", userId]);
+      queryClient.invalidateQueries({ queryKey: ["folders", userId] });
     },
   });
 

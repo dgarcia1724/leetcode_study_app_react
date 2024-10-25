@@ -35,13 +35,14 @@ const NewProblemModal: React.FC<NewProblemModalProps> = ({
         name: name.trim(),
         url: url.trim(),
         confidencePercentage,
+        editDate: new Date().toISOString(),
       });
       setName("");
       setUrl("");
       setConfidencePercentage(50);
       onClose();
     } catch (err) {
-      setError("Failed to create problem. Please try again.");
+      setError(`Failed to create problem: ${(err as Error).message}`);
     } finally {
       setIsLoading(false);
     }

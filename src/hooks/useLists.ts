@@ -23,7 +23,7 @@ export const useLists = (
   const createListMutation = useMutation({
     mutationFn: (listName: string) => createList(folderId, listName),
     onSuccess: () => {
-      queryClient.invalidateQueries(["lists", folderId]);
+      queryClient.invalidateQueries({ queryKey: ["lists", folderId] });
     },
   });
 
@@ -36,14 +36,14 @@ export const useLists = (
       listDetails: Partial<List>;
     }) => updateList(folderId, listId, listDetails),
     onSuccess: () => {
-      queryClient.invalidateQueries(["lists", folderId]);
+      queryClient.invalidateQueries({ queryKey: ["lists", folderId] });
     },
   });
 
   const deleteListMutation = useMutation({
     mutationFn: (listId: number) => deleteList(folderId, listId),
     onSuccess: () => {
-      queryClient.invalidateQueries(["lists", folderId]);
+      queryClient.invalidateQueries({ queryKey: ["lists", folderId] });
     },
   });
 

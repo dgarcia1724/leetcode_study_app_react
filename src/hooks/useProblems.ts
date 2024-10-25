@@ -20,7 +20,7 @@ export const useProblems = (listId: number) => {
     mutationFn: (problem: Omit<Problem, "id">) =>
       createProblem(listId, problem),
     onSuccess: () => {
-      queryClient.invalidateQueries(["problems", listId]);
+      queryClient.invalidateQueries({ queryKey: ["problems", listId] });
     },
   });
 
@@ -33,14 +33,14 @@ export const useProblems = (listId: number) => {
       problemDetails: Partial<Problem>;
     }) => updateProblem(problemId, problemDetails),
     onSuccess: () => {
-      queryClient.invalidateQueries(["problems", listId]);
+      queryClient.invalidateQueries({ queryKey: ["problems", listId] });
     },
   });
 
   const deleteProblemMutation = useMutation({
     mutationFn: (problemId: number) => deleteProblem(problemId),
     onSuccess: () => {
-      queryClient.invalidateQueries(["problems", listId]);
+      queryClient.invalidateQueries({ queryKey: ["problems", listId] });
     },
   });
 

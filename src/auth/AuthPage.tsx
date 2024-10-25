@@ -1,4 +1,3 @@
-import React from "react";
 import GoogleAuth from "./GoogleAuth";
 import Auth from "./Auth";
 
