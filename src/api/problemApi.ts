@@ -1,6 +1,7 @@
 import { Problem } from "../types/problem";
 
-const BASE_URL = "http://localhost:8080/api";
+const BASE_URL =
+  "https://leetcode-study-app-backend-springboot.onrender.com/api";
 
 export const fetchProblems = async (listId: number): Promise<Problem[]> => {
   const response = await fetch(`${BASE_URL}/problems/list/${listId}`);

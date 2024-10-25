@@ -1,7 +1,6 @@
 import { Folder } from "../types/folder";
 
-const BASE_URL =
-  "https://leetcode-study-app-backend-springboot.onrender.com/api";
+const BASE_URL = "http://localhost:8080/api";
 
 export const fetchFolders = async (
   userId: string,
