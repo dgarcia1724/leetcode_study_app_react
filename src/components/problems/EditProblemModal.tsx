@@ -19,7 +19,7 @@ const EditProblemModal: React.FC<EditProblemModalProps> = ({
 }) => {
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
-  const [confidencePercentage, setConfidencePercentage] = useState(50);
+  const [confidencePercentage, setConfidencePercentage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

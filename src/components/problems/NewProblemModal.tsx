@@ -14,7 +14,7 @@ const NewProblemModal: React.FC<NewProblemModalProps> = ({
 }) => {
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
-  const [confidencePercentage, setConfidencePercentage] = useState(50);
+  const [confidencePercentage, setConfidencePercentage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -39,7 +39,7 @@ const NewProblemModal: React.FC<NewProblemModalProps> = ({
       });
       setName("");
       setUrl("");
-      setConfidencePercentage(50);
+      setConfidencePercentage(0);
       onClose();
     } catch (err) {
       setError(`Failed to create problem: ${(err as Error).message}`);
