@@ -15,6 +15,16 @@ const FolderList: React.FC<FolderListProps> = ({
   onDeleteFolder,
   onFolderClick,
 }) => {
+  const formatDateToPacificTime = (dateString: string) => {
+    // Ensure UTC by appending 'Z' if not present
+    const utcDate = new Date(
+      dateString.endsWith("Z") ? dateString : `${dateString}Z`
+    );
+    return utcDate.toLocaleString("en-US", {
+      timeZone: "America/Los_Angeles",
+    });
+  };
+
   return (
     <ul className="divide-y divide-gray-200 dark:divide-gray-700">
       {folders.map((folder) => (
@@ -30,7 +40,7 @@ const FolderList: React.FC<FolderListProps> = ({
               {folder.name}
             </div>
             <div className="text-sm text-gray-500 dark:text-gray-400">
-              {new Date(folder.editDate).toLocaleString()}
+              {formatDateToPacificTime(folder.editDate)}
             </div>
             <div className="mt-1">
               <div className="flex items-center">
