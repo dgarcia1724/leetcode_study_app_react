@@ -19,6 +19,16 @@ const ProblemList: React.FC<ProblemListProps> = ({
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
+  const formatDateToPacificTime = (dateString: string) => {
+    // Ensure UTC by appending 'Z' if not present
+    const utcDate = new Date(
+      dateString.endsWith("Z") ? dateString : `${dateString}Z`
+    );
+    return utcDate.toLocaleString("en-US", {
+      timeZone: "America/Los_Angeles",
+    });
+  };
+
   return (
     <ul className="divide-y divide-gray-200 dark:divide-gray-700">
       {problems.map((problem) => (
@@ -32,7 +42,7 @@ const ProblemList: React.FC<ProblemListProps> = ({
               {problem.name}
             </div>
             <div className="text-sm text-gray-500 dark:text-gray-400">
-              {new Date(problem.editDate).toLocaleString()}
+              {formatDateToPacificTime(problem.editDate)}
             </div>
             <div className="mt-1">
               <div className="flex items-center">
