@@ -1,7 +1,6 @@
 import { List } from "../types/list";
 
-const BASE_URL =
-  "https://leetcode-study-app-backend-springboot.onrender.com/api";
+const BASE_URL = "http://localhost:8080/api";
 
 export const fetchLists = async (
   folderId: number,
