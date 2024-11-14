@@ -20,12 +20,18 @@ const ProblemList: React.FC<ProblemListProps> = ({
   };
 
   const formatDateToPacificTime = (dateString: string) => {
-    // Ensure UTC by appending 'Z' if not present
-    const utcDate = new Date(
-      dateString.endsWith("Z") ? dateString : `${dateString}Z`
-    );
-    return utcDate.toLocaleString("en-US", {
+    // Create a date object in UTC
+    const date = new Date(dateString);
+
+    // Convert to Pacific Time
+    return date.toLocaleString("en-US", {
       timeZone: "America/Los_Angeles",
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
     });
   };
 
